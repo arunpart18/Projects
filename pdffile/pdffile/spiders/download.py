@@ -1,18 +1,29 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
 import scrapy
-from scrapy.settings import Settings
 
+class MySpider(scrapy.Spider):
 
-class DownloadSpider(scrapy.Spider):
-    name = 'download'
-    #allowed_domains = ['http://sysveda.co.in/']
-    start_urls = ['https://www.researchgate.net/publication/312442303_An_Introduction_to_Deep_Learning']
+    name = 'myspider'
+
+    start_urls = [
+          'https://www.alloschool.com/element/43082',
+    ]
 
     def parse(self, response):
 
         def extract_with_css(query):
             return response.css(query).get(default='').strip()
         yield {
-          'file_urls': ['https://www.researchgate.net/profile/Sylvain_Chevallier/publication/312442303_An_Introduction_to_Deep_Learning/links/5c41f922299bf12be3d194a0/An-Introduction-to-Deep-Learning.pdf'],
-        } 
+          'file_urls': [extract_with_css('a.btn.btn-primary::attr(href)')],
+        }
+
+
+from scrapy.crawler import CrawlerProcess
+
+c = CrawlerProcess({
+    'ITEM_PIPELINES': {'scrapy.pipelines.files.FilesPipeline': 1},
+    'FILES_STORE': 'D:/Arunkumar.P/01_Projects/Anaconda',
+})
+c.crawl(MySpider)
+c.start()
