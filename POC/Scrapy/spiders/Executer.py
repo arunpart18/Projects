@@ -66,7 +66,14 @@ class AngularSpider(scrapy.Spider):
     ]    
     # Initalize the webdriver    
     def __init__(self):
-        self.driver = webdriver.Chrome('/usr/bin/chromedriver')
+        options = webdriver.ChromeOptions()
+        options.add_argument("headless")
+        options.add_argument("disable-gpu")
+        options.add_argument("no-default-browser-check")
+        options.add_argument("no-sandbox")
+        options.add_argument("disable-dev-shm-usage")
+        options.add_argument("window-size=1920,1080")
+        self.driver = webdriver.Chrome('/usr/bin/chromedriver',chrome_options=options)
 
     
     # Parse through each Start URLs
