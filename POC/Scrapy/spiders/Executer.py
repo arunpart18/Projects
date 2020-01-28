@@ -52,7 +52,7 @@ class WebpageSpider(scrapy.Spider):
         #strA =""
         for base in response.css('.pcstname, .bsns_pcst'):
             writer.writerow({'Stockinfo':base.css('::text').extract(),'Value':''})
-        writer.writerow({'Stockinfo':'Initial & closing Stock Price','Value':''})
+        writer.writerow({'Stockinfo':'Initial & Closing Stock Price','Value':''})
         for base in response.css('.open_lhs1 li'):    
             writer.writerow({'Stockinfo':base.xpath('p[1]/text()').get(),'Value':base.xpath('p[2]/text()').get()})
         writer.writerow({'Stockinfo':'Current Stock Price','Value':''})
@@ -66,7 +66,7 @@ class AngularSpider(scrapy.Spider):
     ]    
     # Initalize the webdriver    
     def __init__(self):
-        self.driver = webdriver.Chrome('D:/Arunkumar.P/09_Applications/chromedriver_win32/chromedriver.exe')
+        self.driver = webdriver.Chrome('/usr/bin/chromedriver')
 
     
     # Parse through each Start URLs
@@ -93,7 +93,7 @@ class AngularSpider(scrapy.Spider):
 
 c = CrawlerProcess({
     'ITEM_PIPELINES': {'scrapy.pipelines.files.FilesPipeline': 1},
-    'FILES_STORE': 'D:/Arunkumar.P/01_Projects/Anaconda',
+    'FILES_STORE': '/root/Projects',
 })
 c.crawl(WebpageSpider)
 c.crawl(DynaSpider)
